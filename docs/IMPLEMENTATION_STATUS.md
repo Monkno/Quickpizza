@@ -4,18 +4,17 @@ Last updated: 2026-09-15
 
 ## Current checkpoint
 
-The project has completed Phase 3 and the cloud connectivity smoke in Phase 4. Before the baseline
-dispatch, the campaign had consumed one Gatling credit; the current total is pending post-run
-review.
+The project has completed Phase 3, the cloud connectivity smoke, and the baseline in Phase 4. The
+campaign has consumed five Gatling credits. Five of the ten-credit team quota remain.
 
-| Phase                        | Status                            | Evidence or next gate                                                                   |
-| ---------------------------- | --------------------------------- | --------------------------------------------------------------------------------------- |
-| 0. Planning                  | Complete                          | Plan approved; repository, branch, target, quota, and safety limits confirmed           |
-| 1. Live reconnaissance       | Complete for anonymous HTTP scope | Homepage and public configuration returned 200; recommendation requires authorization   |
-| 2. Test harness              | Complete                          | No-load gates and the corrected two-request anonymous smoke passed                      |
-| 3. Cloud deployment          | Complete                          | Package and test configuration deployed; immutable IDs recorded                         |
-| 4. Controlled cloud campaign | In progress                       | Cloud smoke passed; baseline dispatched; light ramp requires baseline and budget review |
-| 5. Baseline governance       | Procedure complete                | Comparison and classification rules are versioned; evidence remains provisional         |
+| Phase                        | Status                            | Evidence or next gate                                                                 |
+| ---------------------------- | --------------------------------- | ------------------------------------------------------------------------------------- |
+| 0. Planning                  | Complete                          | Plan approved; repository, branch, target, quota, and safety limits confirmed         |
+| 1. Live reconnaissance       | Complete for anonymous HTTP scope | Homepage and public configuration returned 200; recommendation requires authorization |
+| 2. Test harness              | Complete                          | No-load gates and the corrected two-request anonymous smoke passed                    |
+| 3. Cloud deployment          | Complete                          | Package and test configuration deployed; immutable IDs recorded                       |
+| 4. Controlled cloud campaign | Paused at credit gate             | Baseline passed; light ramp would breach the three-credit investigation buffer        |
+| 5. Baseline governance       | Procedure complete                | Rules are versioned; thresholds remain provisional after the first baseline           |
 
 ## Implemented safety controls
 
@@ -54,15 +53,17 @@ as a secret. No browser session credential will be copied into CI.
   created the package and test configuration without starting a run or consuming credits.
 - [Cloud connectivity smoke run_z1htg41chifw7dt9bjf6fao8oy](https://cloud.gatling.io/o/pushpoint-co/simulations/test_e885rruk97b4fpbtpfbxuxtcxa/runs/run_z1htg41chifw7dt9bjf6fao8oy)
   passed with two requests, zero errors, 179 ms p95, and three successful assertions.
-- Campaign consumption is 1 credit; the `Quickpizza` team has 9 of 10 credits remaining.
+- [Controlled baseline run_ifz6nrwcetgp7cjwqib3tudbfc](https://cloud.gatling.io/o/pushpoint-co/simulations/test_jo8wmpyydirkuqnifpszu7rt3c/runs/run_ifz6nrwcetgp7cjwqib3tudbfc)
+  passed 360 requests with zero errors, 44 ms p95, 45 ms p99, and three successful assertions.
+- The baseline consumed 4 credits. Total campaign consumption is 5 credits, leaving 5 of 10.
 
 ## Safe resume point
 
-1. Review the dispatched baseline result, actual credit consumption, and remaining team quota.
-2. Record its evidence and classify it using `docs/BASELINE_GOVERNANCE.md`.
-3. Reconfirm the repository, branch, target, and anonymous-only scope before another dispatch.
-4. Start the light ramp only when the baseline is healthy and the approved credit buffer will be
-   preserved after expected initialization and execution consumption.
+1. Keep the light ramp deferred while only five team credits remain; the expected four-credit cost
+   would leave one and violate the three-credit investigation buffer.
+2. If the quota increases, reconfirm the repository, branch, target, and anonymous-only scope.
+3. Recheck the quota immediately before dispatch and run at most one guarded light ramp.
+4. Record its evidence using the result template and compare it only under the governance rules.
 
-Do not add the authenticated pizza transaction, dispatch the ramp before reviewing the baseline
-and credits, or enable any automatic retry from this checkpoint.
+Do not add the authenticated pizza transaction, spend the protected credit buffer, or enable any
+automatic retry from this checkpoint.

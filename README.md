@@ -63,6 +63,9 @@ still be checked immediately before every dispatch.
 The first cloud connectivity smoke passed and is documented in
 [Gatling Cloud Connectivity Smoke — 2026-09-15](docs/results/2026-09-15-cloud-smoke.md).
 
+The first controlled baseline also passed and is documented in
+[Gatling Cloud Baseline — 2026-09-15](docs/results/2026-09-15-cloud-baseline.md).
+
 The same anonymous journey also defines two bounded, three-minute workload profiles: `baseline`
 at one journey per second and `light-ramp` from 0.5 to 2 journeys per second. They are deployed
 and executed separately; neither can be selected by the cloud smoke workflow.
@@ -74,6 +77,9 @@ smoke, and has no retry or schedule.
 The manual-only `Gatling Cloud light ramp (manual)` workflow is also implemented, but its presence
 does not authorize a run. It requires `RUN_THREE_CREDIT_LIGHT_RAMP` and may be dispatched only
 after a healthy baseline and a fresh credit check confirm that the campaign budget remains valid.
+The current baseline consumed four credits, leaving five of the ten-credit team quota. The light
+ramp is therefore deferred because an equivalent run would breach the three-credit investigation
+buffer.
 
 Result interpretation and the version-controlled comparison rules are defined in
 [Baseline Governance](docs/BASELINE_GOVERNANCE.md). Use the
