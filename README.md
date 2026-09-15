@@ -67,4 +67,9 @@ The same anonymous journey also defines two bounded, three-minute workload profi
 at one journey per second and `light-ramp` from 0.5 to 2 journeys per second. They are deployed
 and executed separately; neither can be selected by the cloud smoke workflow.
 
+The manual-only `Gatling Cloud baseline (manual)` workflow is the sole baseline entry point. It
+requires `RUN_THREE_CREDIT_BASELINE`, uses the same one-generator concurrency lock as the cloud
+smoke, and has no retry or schedule. Light-ramp execution remains unavailable until a healthy
+baseline has been reviewed.
+
 > QuickPizza is a shared public testing environment. High-load, stress, spike, breakpoint, and long-duration tests must not be executed against it.
