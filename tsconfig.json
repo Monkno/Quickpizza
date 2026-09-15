@@ -1,0 +1,13 @@
+{
+  "compilerOptions": {
+    "outDir": "./target",
+    "lib": ["es2023", "dom"],
+    "target": "es2024",
+    "module": "nodenext",
+    "moduleResolution": "node16",
+    "strict": true,
+    "forceConsistentCasingInFileNames": true
+  },
+  "include": ["src/**/*.ts"],
+  "exclude": ["**/*.test.ts"]
+}

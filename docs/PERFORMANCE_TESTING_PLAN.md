@@ -1,14 +1,14 @@
 # QuickPizza Performance Testing and Observability Plan
 
-| Field | Value |
-| --- | --- |
-| Status | Proposed |
-| Version | 1.0 |
-| System under test | `https://quickpizza.grafana.com` |
-| Test type | Black-box performance testing and external observability |
-| Primary platform | Gatling Enterprise Cloud |
-| Implementation language | TypeScript |
-| Repository | `Monkno/Quickpizza` |
+| Field                   | Value                                                    |
+| ----------------------- | -------------------------------------------------------- |
+| Status                  | Approved — implementation in progress                    |
+| Version                 | 1.0                                                      |
+| System under test       | `https://quickpizza.grafana.com`                         |
+| Test type               | Black-box performance testing and external observability |
+| Primary platform        | Gatling Enterprise Cloud                                 |
+| Implementation language | TypeScript                                               |
+| Repository              | `Monkno/Quickpizza`                                      |
 
 ## 1. Executive summary
 
@@ -92,15 +92,15 @@ Gatling works at the protocol level. It does not execute page JavaScript, render
 
 The first implementation phase will confirm the live contract before finalizing requests. Candidate public surfaces are:
 
-| Surface | Method/protocol | Purpose | Initial scope |
-| --- | --- | --- | --- |
-| `/` | `GET` | Homepage availability and static entry point | Included |
-| `/api/config` | `GET` | Public application configuration | Included after reconnaissance |
-| `/api/pizza` | `POST` | Generate a pizza recommendation | Included |
-| Public catalog endpoints | `GET` | Ingredients, doughs, tools, names, adjectives, and quotes used by the application | Include only endpoints confirmed by live traffic |
-| `/ws` | WebSocket | Real-time QuickPizza messages | Optional, low concurrency only |
-| User and rating endpoints | `POST`, `GET`, `DELETE` | Authentication and rating lifecycle | Excluded initially because they create or depend on shared persistent state |
-| Admin endpoints | Any | Administrative behavior | Explicitly excluded |
+| Surface                   | Method/protocol         | Purpose                                                                           | Initial scope                                                               |
+| ------------------------- | ----------------------- | --------------------------------------------------------------------------------- | --------------------------------------------------------------------------- |
+| `/`                       | `GET`                   | Homepage availability and static entry point                                      | Included                                                                    |
+| `/api/config`             | `GET`                   | Public application configuration                                                  | Included after reconnaissance                                               |
+| `/api/pizza`              | `POST`                  | Generate a pizza recommendation                                                   | Included                                                                    |
+| Public catalog endpoints  | `GET`                   | Ingredients, doughs, tools, names, adjectives, and quotes used by the application | Include only endpoints confirmed by live traffic                            |
+| `/ws`                     | WebSocket               | Real-time QuickPizza messages                                                     | Optional, low concurrency only                                              |
+| User and rating endpoints | `POST`, `GET`, `DELETE` | Authentication and rating lifecycle                                               | Excluded initially because they create or depend on shared persistent state |
+| Admin endpoints           | Any                     | Administrative behavior                                                           | Explicitly excluded                                                         |
 
 Endpoint discovery must use public browser traffic, public documentation, and harmless single-request probes only. The performance suite must not rely on private implementation details.
 
@@ -141,13 +141,13 @@ Pauses must represent human interaction time and prevent tight loops. The initia
 
 All profiles use one load generator and a single geographic location. Cloud execution is sequential.
 
-| Profile | Purpose | Proposed load | Maximum duration | Cloud credits |
-| --- | --- | --- | --- | --- |
-| Local protocol smoke | Validate script, checks, data, and naming | One user, one iteration | Less than one minute | None |
-| Cloud connectivity smoke | Confirm packaging, token, location, and report generation | One user with normal pauses | One minute | Approximately one |
-| Baseline | Measure low-load steady behavior | Open model targeting approximately one business iteration per second | Three minutes | Approximately three |
-| Light ramp | Observe behavior under a small controlled increase | Gradual ramp from approximately 0.5 to 2 iterations per second | Three minutes | Approximately three |
-| Confirmation run | Confirm a suspected regression only when justified | Same profile as the run being confirmed | Maximum two minutes | Up to two |
+| Profile                  | Purpose                                                   | Proposed load                                                        | Maximum duration     | Cloud credits       |
+| ------------------------ | --------------------------------------------------------- | -------------------------------------------------------------------- | -------------------- | ------------------- |
+| Local protocol smoke     | Validate script, checks, data, and naming                 | One user, one iteration                                              | Less than one minute | None                |
+| Cloud connectivity smoke | Confirm packaging, token, location, and report generation | One user with normal pauses                                          | One minute           | Approximately one   |
+| Baseline                 | Measure low-load steady behavior                          | Open model targeting approximately one business iteration per second | Three minutes        | Approximately three |
+| Light ramp               | Observe behavior under a small controlled increase        | Gradual ramp from approximately 0.5 to 2 iterations per second       | Three minutes        | Approximately three |
+| Confirmation run         | Confirm a suspected regression only when justified        | Same profile as the run being confirmed                              | Maximum two minutes  | Up to two           |
 
 The initial campaign must stop after the cloud smoke, baseline, and light-ramp runs. This limits planned use to approximately seven credits and preserves at least three credits for investigation or confirmation. Initialization time is billable, so actual consumption must be checked after every run.
 
@@ -429,18 +429,18 @@ Exit gate: a future authorized run can be reproduced and interpreted without und
 
 ## 15. Risks and mitigations
 
-| Risk | Impact | Mitigation |
-| --- | --- | --- |
-| Shared target variability | False regression signals | Use compatible runs, record context, and allow an inconclusive outcome |
-| Accidental overload | Harm to a public demo | Low rates, one generator, hard durations, abort thresholds, and manual execution |
-| Credit exhaustion | Inability to confirm results | Ten-credit team quota, seven-credit initial campaign, no schedules or automatic retries |
-| Token exposure | Unauthorized Gatling access | Encrypted secret, team-only scope, no logging, and rotation procedure |
-| Dynamic request names | Fragmented metrics | Use stable names and groups; keep IDs only in session data |
-| Invalid fast responses | Misleading pass result | Check status, content type, JSON parseability, and required fields |
-| Coordinated omission | Under-reported latency under load | Prefer an open workload for rate-based profiles and monitor achieved injection rate |
-| Load-generator bottleneck | Invalid service conclusions | Monitor generator health and keep the load intentionally small |
-| Hidden server-side cause | Unsupported root-cause claim | Report client evidence only and explicitly state missing telemetry |
-| Persistent test data | Pollution of shared environment | Exclude write-heavy flows and use non-persistent public operations |
+| Risk                      | Impact                            | Mitigation                                                                              |
+| ------------------------- | --------------------------------- | --------------------------------------------------------------------------------------- |
+| Shared target variability | False regression signals          | Use compatible runs, record context, and allow an inconclusive outcome                  |
+| Accidental overload       | Harm to a public demo             | Low rates, one generator, hard durations, abort thresholds, and manual execution        |
+| Credit exhaustion         | Inability to confirm results      | Ten-credit team quota, seven-credit initial campaign, no schedules or automatic retries |
+| Token exposure            | Unauthorized Gatling access       | Encrypted secret, team-only scope, no logging, and rotation procedure                   |
+| Dynamic request names     | Fragmented metrics                | Use stable names and groups; keep IDs only in session data                              |
+| Invalid fast responses    | Misleading pass result            | Check status, content type, JSON parseability, and required fields                      |
+| Coordinated omission      | Under-reported latency under load | Prefer an open workload for rate-based profiles and monitor achieved injection rate     |
+| Load-generator bottleneck | Invalid service conclusions       | Monitor generator health and keep the load intentionally small                          |
+| Hidden server-side cause  | Unsupported root-cause claim      | Report client evidence only and explicitly state missing telemetry                      |
+| Persistent test data      | Pollution of shared environment   | Exclude write-heavy flows and use non-persistent public operations                      |
 
 ## 16. Reporting template
 
@@ -470,4 +470,3 @@ Every executed cloud profile should produce a short findings record containing:
 - [Gatling credit consumption](https://docs.gatling.io/reference/run-tests/credits/)
 - [Gatling OpenTelemetry integration](https://docs.gatling.io/integrations/apm-tools/otel/)
 - [Grafana k6 resource guidance for shared demo environments](https://grafana.com/docs/k6/latest/get-started/resources/)
-
