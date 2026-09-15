@@ -4,7 +4,7 @@ Last updated: 2026-09-15
 
 ## Current checkpoint
 
-The project has completed Phase 2 of the approved performance testing plan. No Gatling
+The project has completed Phase 3 of the approved performance testing plan. No Gatling
 Enterprise Cloud load run has been started and no Gatling credits have been consumed by this
 repository.
 
@@ -13,7 +13,7 @@ repository.
 | 0. Planning                  | Complete                          | Plan approved; repository, branch, target, quota, and safety limits confirmed         |
 | 1. Live reconnaissance       | Complete for anonymous HTTP scope | Homepage and public configuration returned 200; recommendation requires authorization |
 | 2. Test harness              | Complete                          | No-load gates and the corrected two-request anonymous smoke passed                    |
-| 3. Cloud deployment          | In progress                       | Configuration-as-code and a deploy-only manual workflow are being validated           |
+| 3. Cloud deployment          | Complete                          | Package and test configuration deployed; immutable IDs recorded                       |
 | 4. Controlled cloud campaign | Not started                       | Requires a separate pre-run credit and configuration check                            |
 | 5. Baseline governance       | Not started                       | Requires valid controlled-run evidence                                                |
 
@@ -45,14 +45,15 @@ as a secret. No browser session credential will be copied into CI.
 - [Anonymous protocol smoke 35007608915](https://github.com/Monkno/Quickpizza/actions/runs/35007608915)
   passed two of two requests with zero failures and a 267 ms p95.
 - The smoke used no Gatling Enterprise Cloud load generator and consumed zero Gatling credits.
+- [Deploy-only run 35009730918](https://github.com/Monkno/Quickpizza/actions/runs/35009730918)
+  created the package and test configuration without starting a run or consuming credits.
 
 ## Safe resume point
 
-1. Validate and deploy the package without starting a run.
-2. Record the returned package and test IDs in `.gatling/package.conf`.
-3. Reconfirm the repository, branch, target, and anonymous-only scope.
-4. Recheck the `Quickpizza` team quota immediately before any cloud run.
-5. Stop before starting the one-credit cloud connectivity smoke unless the campaign budget
+1. Reconfirm the repository, branch, target, and anonymous-only scope.
+2. Recheck the `Quickpizza` team quota immediately before any cloud run.
+3. Add and validate a manual workflow that can start only the cloud connectivity smoke.
+4. Stop before starting the one-credit cloud connectivity smoke unless the campaign budget
    remains valid.
 
 Do not add the authenticated pizza transaction, proceed to baseline or ramp, or enable any

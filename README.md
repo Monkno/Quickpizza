@@ -5,7 +5,7 @@ This repository contains the performance testing and black-box observability str
 - System under test: <https://quickpizza.grafana.com>
 - Execution platform: Gatling Enterprise Cloud
 - Test implementation language: TypeScript
-- Current phase: Phase 2 harness complete; Gatling Cloud deployment not started
+- Current phase: Phase 3 deployment complete; controlled cloud execution not started
 
 See the [Performance Testing and Observability Plan](docs/PERFORMANCE_TESTING_PLAN.md) for scope, safety controls, workload models, quality gates, credit budget, and implementation phases.
 
@@ -49,5 +49,8 @@ The latest verified result is recorded in
 The manual-only `Gatling deploy (manual)` workflow packages the simulation and deploys its test
 configuration to the `Quickpizza` team. Deployment does not start a load test. Cloud execution
 is intentionally kept in a separate future workflow so publishing code cannot consume credits.
+
+The verified deployment is recorded in
+[Gatling Enterprise Deployment — 2026-09-15](docs/results/2026-09-15-gatling-deployment.md).
 
 > QuickPizza is a shared public testing environment. High-load, stress, spike, breakpoint, and long-duration tests must not be executed against it.
