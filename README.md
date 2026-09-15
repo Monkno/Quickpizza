@@ -60,4 +60,7 @@ currently implemented. It requires the exact confirmation value `RUN_ONE_CREDIT_
 deployed one-user smoke, waits for assertions, and has no retry or schedule. The team quota must
 still be checked immediately before every dispatch.
 
+The first cloud connectivity smoke passed and is documented in
+[Gatling Cloud Connectivity Smoke — 2026-09-15](docs/results/2026-09-15-cloud-smoke.md).
+
 > QuickPizza is a shared public testing environment. High-load, stress, spike, breakpoint, and long-duration tests must not be executed against it.
