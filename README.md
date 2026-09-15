@@ -38,7 +38,8 @@ have been reconfirmed. It sends exactly two requests to the public demo with one
 and one iteration. It uses no Gatling Enterprise Cloud credits when run locally.
 
 The same bounded smoke is available through the manual-only `Protocol smoke (manual)` GitHub
-Actions workflow. It is never triggered by a push, pull request, or schedule.
+Actions workflow. It is never triggered by a push, pull request, or schedule. Every manual run
+retains its native Gatling HTML report as a GitHub Actions artifact for seven days.
 
 The latest verified result is recorded in
 [Anonymous Protocol Smoke — 2026-09-15](docs/results/2026-09-15-protocol-smoke.md).
