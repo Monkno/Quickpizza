@@ -1,0 +1,60 @@
+name: Gatling Cloud light ramp (manual)
+
+on:
+  workflow_dispatch:
+    inputs:
+      confirmation:
+        description: Type RUN_THREE_CREDIT_LIGHT_RAMP to authorize this run
+        required: true
+        type: string
+
+permissions:
+  contents: read
+
+concurrency:
+  group: quickpizza-gatling-cloud-run
+  cancel-in-progress: false
+
+jobs:
+  light-ramp:
+    name: Run one controlled three-minute light ramp
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+
+    steps:
+      - name: Validate explicit run confirmation
+        env:
+          RUN_CONFIRMATION: ${{ inputs.confirmation }}
+        run: |
+          if [ "$RUN_CONFIRMATION" != "RUN_THREE_CREDIT_LIGHT_RAMP" ]; then
+            echo "Light ramp rejected: confirmation value did not match."
+            exit 1
+          fi
+
+      - name: Check out repository
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+
+      - name: Set up Node.js
+        uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
+        with:
+          node-version: 24
+          cache: npm
+
+      - name: Install locked dependencies
+        run: npm ci
+
+      - name: Run no-load quality gates
+        run: npm run quality
+
+      - name: Deploy and run the bounded light ramp
+        env:
+          GATLING_ENTERPRISE_API_TOKEN: ${{ secrets.GATLING_ENTERPRISE_API_TOKEN }}
+        run: >-
+          npx gatling enterprise-start
+          --enterprise-simulation="QuickPizza - Anonymous Light Ramp"
+          --non-interactive
+          --wait-for-run-end
+          --run-title="QuickPizza anonymous light ramp - ${GITHUB_SHA::7}"
+          --run-description="Ramp from 0.5 to 2 journeys per second for three minutes, two anonymous requests per journey"

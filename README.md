@@ -69,7 +69,14 @@ and executed separately; neither can be selected by the cloud smoke workflow.
 
 The manual-only `Gatling Cloud baseline (manual)` workflow is the sole baseline entry point. It
 requires `RUN_THREE_CREDIT_BASELINE`, uses the same one-generator concurrency lock as the cloud
-smoke, and has no retry or schedule. Light-ramp execution remains unavailable until a healthy
-baseline has been reviewed.
+smoke, and has no retry or schedule.
+
+The manual-only `Gatling Cloud light ramp (manual)` workflow is also implemented, but its presence
+does not authorize a run. It requires `RUN_THREE_CREDIT_LIGHT_RAMP` and may be dispatched only
+after a healthy baseline and a fresh credit check confirm that the campaign budget remains valid.
+
+Result interpretation and the version-controlled comparison rules are defined in
+[Baseline Governance](docs/BASELINE_GOVERNANCE.md). Use the
+[Gatling Cloud Run template](docs/results/RUN_RESULT_TEMPLATE.md) for future evidence records.
 
 > QuickPizza is a shared public testing environment. High-load, stress, spike, breakpoint, and long-duration tests must not be executed against it.
