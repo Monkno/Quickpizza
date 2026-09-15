@@ -13,7 +13,7 @@ repository.
 | 0. Planning                  | Complete                          | Plan approved; repository, branch, target, quota, and safety limits confirmed         |
 | 1. Live reconnaissance       | Complete for anonymous HTTP scope | Homepage and public configuration returned 200; recommendation requires authorization |
 | 2. Test harness              | Complete                          | No-load gates and the corrected two-request anonymous smoke passed                    |
-| 3. Cloud deployment          | Not started                       | Requires a reviewed package and sufficient team credits                               |
+| 3. Cloud deployment          | In progress                       | Configuration-as-code and a deploy-only manual workflow are being validated           |
 | 4. Controlled cloud campaign | Not started                       | Requires a separate pre-run credit and configuration check                            |
 | 5. Baseline governance       | Not started                       | Requires valid controlled-run evidence                                                |
 
@@ -26,6 +26,8 @@ repository.
 - CI performs installation, formatting, type checking, and packaging only; it sends no target
   traffic and starts no cloud run.
 - A separate manual-only workflow is the sole CI entry point for the bounded protocol smoke.
+- Gatling Enterprise deployment and execution are separated; the deploy workflow cannot start
+  a cloud run.
 - Unsafe profiles, arbitrary targets, cloud schedules, and automatic retries are absent.
 
 ## Reconnaissance note
@@ -46,11 +48,12 @@ as a secret. No browser session credential will be copied into CI.
 
 ## Safe resume point
 
-1. Reconfirm the repository, branch, target, and anonymous-only scope.
-2. Check the `Quickpizza` Gatling team's remaining credits.
-3. Review and package the exact commit that passed the protocol smoke.
-4. Configure a single load generator for a one-minute cloud connectivity smoke.
-5. Stop before starting that cloud run unless the quota and campaign budget remain valid.
+1. Validate and deploy the package without starting a run.
+2. Record the returned package and test IDs in `.gatling/package.conf`.
+3. Reconfirm the repository, branch, target, and anonymous-only scope.
+4. Recheck the `Quickpizza` team quota immediately before any cloud run.
+5. Stop before starting the one-credit cloud connectivity smoke unless the campaign budget
+   remains valid.
 
 Do not add the authenticated pizza transaction, proceed to baseline or ramp, or enable any
 automatic retry from this checkpoint.

@@ -26,6 +26,7 @@
     "build": "npm run typecheck && gatling build --typescript",
     "quality": "npm run format:check && npm run build",
     "smoke": "npm run typecheck && gatling run --typescript --simulation quickPizza profile=smoke",
-    "package:enterprise": "npm run typecheck && gatling enterprise-package"
+    "package:enterprise": "npm run typecheck && gatling enterprise-package",
+    "deploy:enterprise": "npm run typecheck && gatling enterprise-deploy --non-interactive"
   }
 }

@@ -1,0 +1,51 @@
+name: Gatling deploy (manual)
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: quickpizza-gatling-deploy
+  cancel-in-progress: false
+
+jobs:
+  deploy:
+    name: Deploy package without running it
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+
+      - name: Set up Node.js
+        uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
+        with:
+          node-version: 24
+          cache: npm
+
+      - name: Install locked dependencies
+        run: npm ci
+
+      - name: Run no-load quality gates
+        run: npm run quality
+
+      - name: Package for Gatling Enterprise
+        run: npm run package:enterprise
+
+      - name: Retain the deployable package
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        with:
+          name: gatling-enterprise-package-${{ github.run_id }}
+          path: target/package.zip
+          if-no-files-found: error
+          retention-days: 7
+
+      - name: Deploy package and test configuration without starting a run
+        env:
+          GATLING_ENTERPRISE_API_TOKEN: ${{ secrets.GATLING_ENTERPRISE_API_TOKEN }}
+        run: npx gatling enterprise-deploy --non-interactive

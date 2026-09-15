@@ -44,4 +44,10 @@ retains its native Gatling HTML report as a GitHub Actions artifact for seven da
 The latest verified result is recorded in
 [Anonymous Protocol Smoke — 2026-09-15](docs/results/2026-09-15-protocol-smoke.md).
 
+## Gatling Enterprise deployment
+
+The manual-only `Gatling deploy (manual)` workflow packages the simulation and deploys its test
+configuration to the `Quickpizza` team. Deployment does not start a load test. Cloud execution
+is intentionally kept in a separate future workflow so publishing code cannot consume credits.
+
 > QuickPizza is a shared public testing environment. High-load, stress, spike, breakpoint, and long-duration tests must not be executed against it.
