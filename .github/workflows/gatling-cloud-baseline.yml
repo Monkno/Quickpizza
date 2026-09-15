@@ -49,6 +49,7 @@ jobs:
         run: npm run quality
 
       - name: Deploy and run the bounded baseline
+        id: cloud_baseline
         env:
           GATLING_ENTERPRISE_API_TOKEN: ${{ secrets.GATLING_ENTERPRISE_API_TOKEN }}
         run: >-
@@ -58,3 +59,19 @@ jobs:
           --wait-for-run-end
           --run-title="QuickPizza anonymous baseline - ${GITHUB_SHA::7}"
           --run-description="One journey per second for three minutes, two anonymous requests per journey"
+
+      - name: Publish cloud-baseline summary
+        if: always()
+        env:
+          RUN_OUTCOME: ${{ steps.cloud_baseline.outcome }}
+          GATLING_RUNS_URL: https://cloud.gatling.io/o/pushpoint-co/simulations/test_jo8wmpyydirkuqnifpszu7rt3c/runs
+        run: |
+          {
+            echo "## QuickPizza Gatling Cloud baseline"
+            echo ""
+            echo "- Result: ${RUN_OUTCOME}"
+            echo "- Profile: one journey per second for three minutes"
+            echo "- Target: https://quickpizza.grafana.com"
+            echo "- Credit gate: quota must be checked before dispatch"
+            echo "- Gatling runs: ${GATLING_RUNS_URL}"
+          } >> "$GITHUB_STEP_SUMMARY"

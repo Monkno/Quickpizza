@@ -46,6 +46,23 @@ jobs:
           retention-days: 7
 
       - name: Deploy package and test configuration without starting a run
+        id: enterprise_deploy
         env:
           GATLING_ENTERPRISE_API_TOKEN: ${{ secrets.GATLING_ENTERPRISE_API_TOKEN }}
         run: npx gatling enterprise-deploy --non-interactive
+
+      - name: Publish deploy-only summary
+        if: always()
+        env:
+          DEPLOY_OUTCOME: ${{ steps.enterprise_deploy.outcome }}
+          ACTIONS_RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+        run: |
+          {
+            echo "## QuickPizza Gatling deploy-only result"
+            echo ""
+            echo "- Result: ${DEPLOY_OUTCOME}"
+            echo "- Package: QuickPizza Performance Tests"
+            echo "- Cloud test started: no"
+            echo "- Gatling Cloud credits: none"
+            echo "- Workflow evidence: ${ACTIONS_RUN_URL}"
+          } >> "$GITHUB_STEP_SUMMARY"

@@ -33,4 +33,21 @@ jobs:
         run: npm ci
 
       - name: Run no-load quality gates
+        id: quality
         run: npm run quality
+
+      - name: Publish verification summary
+        if: always()
+        env:
+          QUALITY_OUTCOME: ${{ steps.quality.outcome }}
+          COMMIT_SHA: ${{ github.sha }}
+        run: |
+          {
+            echo "## QuickPizza no-load quality gate"
+            echo ""
+            echo "- Result: ${QUALITY_OUTCOME}"
+            echo "- Commit: ${COMMIT_SHA}"
+            echo "- Checks: formatting, TypeScript, and Gatling package build"
+            echo "- Target traffic: none"
+            echo "- Gatling Cloud credits: none"
+          } >> "$GITHUB_STEP_SUMMARY"

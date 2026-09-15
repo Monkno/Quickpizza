@@ -32,13 +32,32 @@ jobs:
         run: npm ci
 
       - name: Run the two-request anonymous protocol smoke
+        id: protocol_smoke
         run: npm run smoke
 
       - name: Upload the Gatling HTML report
         if: always()
+        id: report_artifact
         uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
         with:
           name: gatling-protocol-smoke-${{ github.run_id }}
           path: target/gatling/
           if-no-files-found: error
           retention-days: 7
+
+      - name: Publish protocol-smoke summary
+        if: always()
+        env:
+          SMOKE_OUTCOME: ${{ steps.protocol_smoke.outcome }}
+          ARTIFACT_OUTCOME: ${{ steps.report_artifact.outcome }}
+          ACTIONS_RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+        run: |
+          {
+            echo "## QuickPizza bounded protocol smoke"
+            echo ""
+            echo "- Result: ${SMOKE_OUTCOME}"
+            echo "- Journey: one user, one iteration, two anonymous requests"
+            echo "- HTML report artifact: ${ARTIFACT_OUTCOME}"
+            echo "- Gatling Cloud credits: none"
+            echo "- Workflow evidence: ${ACTIONS_RUN_URL}"
+          } >> "$GITHUB_STEP_SUMMARY"

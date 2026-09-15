@@ -49,6 +49,7 @@ jobs:
         run: npm run quality
 
       - name: Deploy and run the bounded light ramp
+        id: cloud_light_ramp
         env:
           GATLING_ENTERPRISE_API_TOKEN: ${{ secrets.GATLING_ENTERPRISE_API_TOKEN }}
         run: >-
@@ -58,3 +59,19 @@ jobs:
           --wait-for-run-end
           --run-title="QuickPizza anonymous light ramp - ${GITHUB_SHA::7}"
           --run-description="Ramp from 0.5 to 2 journeys per second for three minutes, two anonymous requests per journey"
+
+      - name: Publish cloud-light-ramp summary
+        if: always()
+        env:
+          RUN_OUTCOME: ${{ steps.cloud_light_ramp.outcome }}
+          GATLING_RUNS_URL: https://cloud.gatling.io/o/pushpoint-co/simulations/test_6b4hwub88ffkiprt1dqqfq9ksh/runs
+        run: |
+          {
+            echo "## QuickPizza Gatling Cloud light ramp"
+            echo ""
+            echo "- Result: ${RUN_OUTCOME}"
+            echo "- Profile: 0.5 to 2 journeys per second for three minutes"
+            echo "- Target: https://quickpizza.grafana.com"
+            echo "- Authorization: healthy baseline and protected credit buffer required"
+            echo "- Gatling runs: ${GATLING_RUNS_URL}"
+          } >> "$GITHUB_STEP_SUMMARY"

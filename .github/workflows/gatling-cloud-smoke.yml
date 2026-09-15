@@ -49,6 +49,7 @@ jobs:
         run: npm run quality
 
       - name: Deploy and run the bounded smoke
+        id: cloud_smoke
         env:
           GATLING_ENTERPRISE_API_TOKEN: ${{ secrets.GATLING_ENTERPRISE_API_TOKEN }}
         run: >-
@@ -58,3 +59,18 @@ jobs:
           --wait-for-run-end
           --run-title="QuickPizza anonymous smoke - ${GITHUB_SHA::7}"
           --run-description="One VU, one iteration, two anonymous requests, public-demo target"
+
+      - name: Publish cloud-smoke summary
+        if: always()
+        env:
+          RUN_OUTCOME: ${{ steps.cloud_smoke.outcome }}
+          GATLING_RUNS_URL: https://cloud.gatling.io/o/pushpoint-co/simulations/test_e885rruk97b4fpbtpfbxuxtcxa/runs
+        run: |
+          {
+            echo "## QuickPizza Gatling Cloud smoke"
+            echo ""
+            echo "- Result: ${RUN_OUTCOME}"
+            echo "- Profile: one user, one iteration, two anonymous requests"
+            echo "- Target: https://quickpizza.grafana.com"
+            echo "- Gatling runs: ${GATLING_RUNS_URL}"
+          } >> "$GITHUB_STEP_SUMMARY"

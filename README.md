@@ -1,16 +1,25 @@
 # QuickPizza Performance Engineering
 
+[![Quality](https://github.com/Monkno/Quickpizza/actions/workflows/quality.yml/badge.svg?branch=codex%2Fperformance-testing-plan)](https://github.com/Monkno/Quickpizza/actions/workflows/quality.yml?query=branch%3Acodex%2Fperformance-testing-plan)
+
 This repository contains the performance testing and black-box observability strategy for the public QuickPizza demo environment.
 
 - System under test: <https://quickpizza.grafana.com>
 - Execution platform: Gatling Enterprise Cloud
 - Test implementation language: TypeScript
-- Current phase: Phase 4 controlled campaign in progress
+- Current phase: Phase 4 paused at the credit gate
 
 See the [Performance Testing and Observability Plan](docs/PERFORMANCE_TESTING_PLAN.md) for scope, safety controls, workload models, quality gates, credit budget, and implementation phases.
 
 Progress and the exact safe resume point are recorded in
 [Implementation Status](docs/IMPLEMENTATION_STATUS.md).
+
+## Evidence and demonstration
+
+- [Evidence Index](docs/EVIDENCE_INDEX.md) maps every claim to implementation and run evidence.
+- [Demonstration Guide](docs/DEMO_GUIDE.md) provides a five-to-seven-minute, zero-load walkthrough.
+- [LinkedIn Educational Post](docs/LINKEDIN_POST.md) contains ready-to-publish English copy and an
+  accurate four-panel story.
 
 ## Requirements
 
