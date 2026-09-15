@@ -37,4 +37,7 @@ This command must be run only after the repository, branch, target, profile, and
 have been reconfirmed. It sends exactly three requests to the public demo with one virtual user
 and one iteration. It uses no Gatling Enterprise Cloud credits when run locally.
 
+The same bounded smoke is available through the manual-only `Protocol smoke (manual)` GitHub
+Actions workflow. It is never triggered by a push, pull request, or schedule.
+
 > QuickPizza is a shared public testing environment. High-load, stress, spike, breakpoint, and long-duration tests must not be executed against it.
