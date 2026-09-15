@@ -14,7 +14,7 @@ repository.
 | 1. Live reconnaissance       | Complete for anonymous HTTP scope | Homepage and public configuration returned 200; recommendation requires authorization |
 | 2. Test harness              | Complete                          | No-load gates and the corrected two-request anonymous smoke passed                    |
 | 3. Cloud deployment          | Complete                          | Package and test configuration deployed; immutable IDs recorded                       |
-| 4. Controlled cloud campaign | Not started                       | Requires a separate pre-run credit and configuration check                            |
+| 4. Controlled cloud campaign | In progress                       | A guarded manual workflow for the one-credit cloud smoke is being validated           |
 | 5. Baseline governance       | Not started                       | Requires valid controlled-run evidence                                                |
 
 ## Implemented safety controls
@@ -28,6 +28,8 @@ repository.
 - A separate manual-only workflow is the sole CI entry point for the bounded protocol smoke.
 - Gatling Enterprise deployment and execution are separated; the deploy workflow cannot start
   a cloud run.
+- Cloud smoke execution requires a literal confirmation value and is limited by a hard job
+  timeout.
 - Unsafe profiles, arbitrary targets, cloud schedules, and automatic retries are absent.
 
 ## Reconnaissance note
@@ -52,7 +54,7 @@ as a secret. No browser session credential will be copied into CI.
 
 1. Reconfirm the repository, branch, target, and anonymous-only scope.
 2. Recheck the `Quickpizza` team quota immediately before any cloud run.
-3. Add and validate a manual workflow that can start only the cloud connectivity smoke.
+3. Validate the manual workflow that can start only the cloud connectivity smoke.
 4. Stop before starting the one-credit cloud connectivity smoke unless the campaign budget
    remains valid.
 

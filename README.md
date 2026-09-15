@@ -53,4 +53,11 @@ is intentionally kept in a separate future workflow so publishing code cannot co
 The verified deployment is recorded in
 [Gatling Enterprise Deployment — 2026-09-15](docs/results/2026-09-15-gatling-deployment.md).
 
+## Controlled cloud smoke
+
+The manual-only `Gatling Cloud smoke (manual)` workflow is the only cloud execution entry point
+currently implemented. It requires the exact confirmation value `RUN_ONE_CREDIT_SMOKE`, runs the
+deployed one-user smoke, waits for assertions, and has no retry or schedule. The team quota must
+still be checked immediately before every dispatch.
+
 > QuickPizza is a shared public testing environment. High-load, stress, spike, breakpoint, and long-duration tests must not be executed against it.
