@@ -1,6 +1,6 @@
 # QuickPizza Performance Engineering
 
-[![Quality](https://github.com/Monkno/Quickpizza/actions/workflows/quality.yml/badge.svg?branch=codex%2Fperformance-testing-plan)](https://github.com/Monkno/Quickpizza/actions/workflows/quality.yml?query=branch%3Acodex%2Fperformance-testing-plan)
+[![Quality](https://github.com/Monkno/Quickpizza/actions/workflows/quality.yml/badge.svg?branch=main)](https://github.com/Monkno/Quickpizza/actions/workflows/quality.yml?query=branch%3Amain)
 
 This repository contains the performance testing and black-box observability strategy for the public QuickPizza demo environment.
 

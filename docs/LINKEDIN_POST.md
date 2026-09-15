@@ -40,7 +40,7 @@ stops before its cost or risk exceeds its value.
 The implementation, test plan, evidence index, run results, and demonstration guide are available
 here:
 
-<https://github.com/Monkno/Quickpizza/tree/codex/performance-testing-plan>
+<https://github.com/Monkno/Quickpizza>
 
 #PerformanceTesting #QualityEngineering #QAautomation #Gatling #Observability #TypeScript
 #GitHubActions #SoftwareTesting
@@ -60,4 +60,4 @@ Use four images or carousel panels:
 - Do not call the first baseline an SLO, benchmark, or capacity certification.
 - Do not imply access to QuickPizza server logs, traces, or infrastructure metrics.
 - Do not present the deferred light ramp as an executed result.
-- If the branch is merged, replace the branch URL with the final default-branch or pull-request URL.
+- Keep the short repository URL so the post continues to point to the default branch.
