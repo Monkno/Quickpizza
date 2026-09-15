@@ -5,7 +5,7 @@ This repository contains the performance testing and black-box observability str
 - System under test: <https://quickpizza.grafana.com>
 - Execution platform: Gatling Enterprise Cloud
 - Test implementation language: TypeScript
-- Current phase: Phase 3 deployment complete; controlled cloud execution not started
+- Current phase: Phase 4 controlled campaign in progress
 
 See the [Performance Testing and Observability Plan](docs/PERFORMANCE_TESTING_PLAN.md) for scope, safety controls, workload models, quality gates, credit budget, and implementation phases.
 
@@ -62,5 +62,9 @@ still be checked immediately before every dispatch.
 
 The first cloud connectivity smoke passed and is documented in
 [Gatling Cloud Connectivity Smoke — 2026-09-15](docs/results/2026-09-15-cloud-smoke.md).
+
+The same anonymous journey also defines two bounded, three-minute workload profiles: `baseline`
+at one journey per second and `light-ramp` from 0.5 to 2 journeys per second. They are deployed
+and executed separately; neither can be selected by the cloud smoke workflow.
 
 > QuickPizza is a shared public testing environment. High-load, stress, spike, breakpoint, and long-duration tests must not be executed against it.

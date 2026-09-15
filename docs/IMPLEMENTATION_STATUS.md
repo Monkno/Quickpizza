@@ -19,7 +19,8 @@ consumed one Gatling credit.
 ## Implemented safety controls
 
 - The simulation accepts only `https://quickpizza.grafana.com`.
-- Only the one-user, one-iteration `smoke` profile exists.
+- Only three bounded profiles exist: one-user `smoke`, three-minute `baseline`, and three-minute
+  `light-ramp`.
 - The journey makes exactly two anonymous application requests and contains no loop or retry.
 - Gatling's external warm-up request is disabled.
 - CI performs installation, formatting, type checking, and packaging only; it sends no target
@@ -54,11 +55,12 @@ as a secret. No browser session credential will be copied into CI.
 
 ## Safe resume point
 
-1. Implement the baseline and light-ramp profiles without changing the anonymous transactions.
-2. Pass local and CI no-load gates, then deploy the new configurations without starting them.
-3. Reconfirm the repository, branch, target, and anonymous-only scope.
-4. Recheck the `Quickpizza` team quota immediately before the three-credit baseline.
-5. Run the baseline only when the campaign budget remains valid; do not start the light ramp
+1. Pass local and CI no-load gates for the baseline and light-ramp profiles.
+2. Deploy their Gatling configurations without starting either profile.
+3. Record their immutable Gatling test IDs.
+4. Reconfirm the repository, branch, target, and anonymous-only scope.
+5. Recheck the `Quickpizza` team quota immediately before the three-credit baseline.
+6. Run the baseline only when the campaign budget remains valid; do not start the light ramp
    unless the baseline is healthy.
 
 Do not add the authenticated pizza transaction, proceed to baseline or ramp, or enable any

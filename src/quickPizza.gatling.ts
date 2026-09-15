@@ -1,10 +1,12 @@
 import {
   atOnceUsers,
+  constantUsersPerSec,
   getParameter,
   global,
   group,
   jmesPath,
   pause,
+  rampUsersPerSec,
   scenario,
   simulation,
   substring
@@ -12,7 +14,7 @@ import {
 import { http, status } from "@gatling.io/http";
 
 const APPROVED_BASE_URL = "https://quickpizza.grafana.com";
-const APPROVED_PROFILE = "smoke";
+const DEFAULT_PROFILE = "smoke";
 
 function normalizeBaseUrl(value: string): string {
   return value.replace(/\/+$/, "");
@@ -20,17 +22,23 @@ function normalizeBaseUrl(value: string): string {
 
 export default simulation((setUp) => {
   const requestedBaseUrl = normalizeBaseUrl(getParameter("baseUrl", APPROVED_BASE_URL));
-  const requestedProfile = getParameter("profile", APPROVED_PROFILE);
+  const requestedProfile = getParameter("profile", DEFAULT_PROFILE);
 
   if (requestedBaseUrl !== APPROVED_BASE_URL) {
     throw new Error(`Rejected unapproved target: ${requestedBaseUrl}`);
   }
 
-  if (requestedProfile !== APPROVED_PROFILE) {
-    throw new Error(
-      `Rejected unsupported profile: ${requestedProfile}. Only '${APPROVED_PROFILE}' is implemented.`
-    );
+  const injectionProfiles = {
+    smoke: atOnceUsers(1),
+    baseline: constantUsersPerSec(1).during(180),
+    "light-ramp": rampUsersPerSec(0.5).to(2).during(180)
+  };
+
+  if (!Object.hasOwn(injectionProfiles, requestedProfile)) {
+    throw new Error(`Rejected unsupported profile: ${requestedProfile}.`);
   }
+
+  const approvedProfile = requestedProfile as keyof typeof injectionProfiles;
 
   const httpProtocol = http
     .baseUrl(APPROVED_BASE_URL)
@@ -51,7 +59,7 @@ export default simulation((setUp) => {
     )
   );
 
-  setUp(journey.injectOpen(atOnceUsers(1)))
+  setUp(journey.injectOpen(injectionProfiles[approvedProfile]))
     .assertions(
       global().failedRequests().count().is(0),
       global().responseTime().percentile3().lt(2000),
