@@ -1,5 +1,4 @@
 import {
-  StringBody,
   atOnceUsers,
   getParameter,
   global,
@@ -40,16 +39,7 @@ export default simulation((setUp) => {
     .userAgentHeader("QuickPizza-Gatling/1.0 (controlled shared-demo test)")
     .disableWarmUp();
 
-  const pizzaRequest = JSON.stringify({
-    maxCaloriesPerSlice: 800,
-    mustBeVegetarian: false,
-    excludedIngredients: [],
-    excludedTools: [],
-    maxNumberOfToppings: 5,
-    minNumberOfToppings: 2
-  });
-
-  const journey = scenario("QuickPizza - Generate one recommendation").exec(
+  const journey = scenario("QuickPizza - Read anonymous public surfaces").exec(
     group("Open QuickPizza").on(
       http("GET homepage").get("/").check(status().is(200), substring("QuickPizza"))
     ),
@@ -58,21 +48,6 @@ export default simulation((setUp) => {
       http("GET public configuration")
         .get("/api/config")
         .check(status().is(200), jmesPath("@").ofMap().exists())
-    ),
-    pause(1, 2),
-    group("Generate recommendation").on(
-      http("POST pizza recommendation")
-        .post("/api/pizza")
-        .body(StringBody(pizzaRequest))
-        .asJson()
-        .check(
-          status().is(200),
-          jmesPath("pizza.name").ofString().exists(),
-          jmesPath("pizza.dough.name").ofString().exists(),
-          jmesPath("pizza.ingredients").ofList().exists(),
-          jmesPath("calories").ofInt().exists(),
-          jmesPath("vegetarian").ofBoolean().exists()
-        )
     )
   );
 

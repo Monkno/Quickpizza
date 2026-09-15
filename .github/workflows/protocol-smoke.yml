@@ -31,5 +31,5 @@ jobs:
       - name: Install locked dependencies
         run: npm ci
 
-      - name: Run the three-request protocol smoke
+      - name: Run the two-request anonymous protocol smoke
         run: npm run smoke

@@ -96,7 +96,7 @@ The first implementation phase will confirm the live contract before finalizing 
 | ------------------------- | ----------------------- | --------------------------------------------------------------------------------- | --------------------------------------------------------------------------- |
 | `/`                       | `GET`                   | Homepage availability and static entry point                                      | Included                                                                    |
 | `/api/config`             | `GET`                   | Public application configuration                                                  | Included after reconnaissance                                               |
-| `/api/pizza`              | `POST`                  | Generate a pizza recommendation                                                   | Included                                                                    |
+| `/api/pizza`              | `POST`                  | Generate a pizza recommendation                                                   | Blocked until a dedicated synthetic credential is approved                  |
 | Public catalog endpoints  | `GET`                   | Ingredients, doughs, tools, names, adjectives, and quotes used by the application | Include only endpoints confirmed by live traffic                            |
 | `/ws`                     | WebSocket               | Real-time QuickPizza messages                                                     | Optional, low concurrency only                                              |
 | User and rating endpoints | `POST`, `GET`, `DELETE` | Authentication and rating lifecycle                                               | Excluded initially because they create or depend on shared persistent state |
@@ -108,7 +108,7 @@ Endpoint discovery must use public browser traffic, public documentation, and ha
 
 ### 6.1 Business transactions
 
-The performance model contains three protocol-level transactions, not a new functional regression suite:
+The anonymous performance model contains two protocol-level transactions, not a new functional regression suite:
 
 1. **Open QuickPizza**
    - Request the public homepage.
@@ -118,9 +118,13 @@ The performance model contains three protocol-level transactions, not a new func
    - Request only the read-only resources confirmed as part of the live application flow.
    - Keep request names stable and group related resources.
 
+The following transaction is conditional and must not be included in anonymous runs:
+
 3. **Generate a pizza recommendation**
-   - Submit a valid, bounded request to the public recommendation API.
-   - Validate HTTP status, JSON content type, response parseability, and the minimum response contract required by the UI.
+   - The live endpoint currently returns 401 without an authorization token.
+   - Include it only after a dedicated synthetic credential is approved and stored as a CI secret.
+   - Never reuse or export a human browser-session credential.
+   - When enabled, validate HTTP status, JSON content type, response parseability, and the minimum response contract required by the UI.
 
 The WebSocket flow may be introduced later as a separate simulation so it cannot unintentionally change the HTTP load model.
 

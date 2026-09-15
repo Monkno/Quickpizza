@@ -8,20 +8,20 @@ The project is implementing Phase 2 of the approved performance testing plan. No
 Enterprise Cloud load run has been started and no Gatling credits have been consumed by this
 repository.
 
-| Phase                        | Status                                | Evidence or next gate                                                                                       |
-| ---------------------------- | ------------------------------------- | ----------------------------------------------------------------------------------------------------------- |
-| 0. Planning                  | Complete                              | Plan approved; repository, branch, target, quota, and safety limits confirmed                               |
-| 1. Live reconnaissance       | Complete for the initial HTTP journey | The public UI generated one recommendation; request contracts are based on the public OpenAPI specification |
-| 2. Test harness              | In progress                           | No-load gates passed in GitHub Actions; the manual three-request protocol smoke remains                     |
-| 3. Cloud deployment          | Not started                           | Requires a reviewed package and sufficient team credits                                                     |
-| 4. Controlled cloud campaign | Not started                           | Requires a separate pre-run credit and configuration check                                                  |
-| 5. Baseline governance       | Not started                           | Requires valid controlled-run evidence                                                                      |
+| Phase                        | Status                            | Evidence or next gate                                                                 |
+| ---------------------------- | --------------------------------- | ------------------------------------------------------------------------------------- |
+| 0. Planning                  | Complete                          | Plan approved; repository, branch, target, quota, and safety limits confirmed         |
+| 1. Live reconnaissance       | Complete for anonymous HTTP scope | Homepage and public configuration returned 200; recommendation requires authorization |
+| 2. Test harness              | In progress                       | No-load gates passed; validate the corrected two-request anonymous smoke once         |
+| 3. Cloud deployment          | Not started                       | Requires a reviewed package and sufficient team credits                               |
+| 4. Controlled cloud campaign | Not started                       | Requires a separate pre-run credit and configuration check                            |
+| 5. Baseline governance       | Not started                       | Requires valid controlled-run evidence                                                |
 
 ## Implemented safety controls
 
 - The simulation accepts only `https://quickpizza.grafana.com`.
 - Only the one-user, one-iteration `smoke` profile exists.
-- The journey makes exactly three application requests and contains no loop or retry.
+- The journey makes exactly two anonymous application requests and contains no loop or retry.
 - Gatling's external warm-up request is disabled.
 - CI performs installation, formatting, type checking, and packaging only; it sends no target
   traffic and starts no cloud run.
@@ -30,14 +30,15 @@ repository.
 
 ## Reconnaissance note
 
-One visible browser interaction confirmed the public recommendation journey. A direct terminal
-probe was blocked by the local environment's authentication layer before usable application
-traffic was produced. The test contract therefore uses the public QuickPizza OpenAPI
-specification and intentionally avoids speculative endpoints or fields.
+One visible browser interaction confirmed that an authenticated browser session can generate a
+recommendation. The first CI protocol smoke confirmed `GET /` and `GET /api/config` with 200
+responses, while `POST /api/pizza` returned 401. The recommendation operation is therefore not
+part of anonymous load until a dedicated synthetic credential is explicitly approved and stored
+as a secret. No browser session credential will be copied into CI.
 
 ## Safe resume point
 
-1. Review the three-request smoke package before any live protocol smoke.
+1. Review the two-request anonymous smoke package before any live protocol smoke.
 2. Manually dispatch `Protocol smoke (manual)` once from the confirmed branch.
 3. Record the result without automatically retrying a failure.
 4. Check Gatling credits immediately before any Enterprise Cloud action.

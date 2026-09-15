@@ -34,7 +34,7 @@ npm run smoke
 ```
 
 This command must be run only after the repository, branch, target, profile, and authorization
-have been reconfirmed. It sends exactly three requests to the public demo with one virtual user
+have been reconfirmed. It sends exactly two requests to the public demo with one virtual user
 and one iteration. It uses no Gatling Enterprise Cloud credits when run locally.
 
 The same bounded smoke is available through the manual-only `Protocol smoke (manual)` GitHub
