@@ -4,7 +4,7 @@ Last updated: 2026-09-15
 
 ## Current checkpoint
 
-The project is implementing Phase 2 of the approved performance testing plan. No Gatling
+The project has completed Phase 2 of the approved performance testing plan. No Gatling
 Enterprise Cloud load run has been started and no Gatling credits have been consumed by this
 repository.
 
@@ -12,7 +12,7 @@ repository.
 | ---------------------------- | --------------------------------- | ------------------------------------------------------------------------------------- |
 | 0. Planning                  | Complete                          | Plan approved; repository, branch, target, quota, and safety limits confirmed         |
 | 1. Live reconnaissance       | Complete for anonymous HTTP scope | Homepage and public configuration returned 200; recommendation requires authorization |
-| 2. Test harness              | In progress                       | No-load gates passed; validate the corrected two-request anonymous smoke once         |
+| 2. Test harness              | Complete                          | No-load gates and the corrected two-request anonymous smoke passed                    |
 | 3. Cloud deployment          | Not started                       | Requires a reviewed package and sufficient team credits                               |
 | 4. Controlled cloud campaign | Not started                       | Requires a separate pre-run credit and configuration check                            |
 | 5. Baseline governance       | Not started                       | Requires valid controlled-run evidence                                                |
@@ -36,11 +36,21 @@ responses, while `POST /api/pizza` returned 401. The recommendation operation is
 part of anonymous load until a dedicated synthetic credential is explicitly approved and stored
 as a secret. No browser session credential will be copied into CI.
 
+## Verified evidence
+
+- [No-load Quality run 35007545377](https://github.com/Monkno/Quickpizza/actions/runs/35007545377)
+  passed installation, formatting, type checking, and Gatling package build on Node.js 24.
+- [Anonymous protocol smoke 35007608915](https://github.com/Monkno/Quickpizza/actions/runs/35007608915)
+  passed two of two requests with zero failures and a 267 ms p95.
+- The smoke used no Gatling Enterprise Cloud load generator and consumed zero Gatling credits.
+
 ## Safe resume point
 
-1. Review the two-request anonymous smoke package before any live protocol smoke.
-2. Manually dispatch `Protocol smoke (manual)` once from the confirmed branch.
-3. Record the result without automatically retrying a failure.
-4. Check Gatling credits immediately before any Enterprise Cloud action.
+1. Reconfirm the repository, branch, target, and anonymous-only scope.
+2. Check the `Quickpizza` Gatling team's remaining credits.
+3. Review and package the exact commit that passed the protocol smoke.
+4. Configure a single load generator for a one-minute cloud connectivity smoke.
+5. Stop before starting that cloud run unless the quota and campaign budget remain valid.
 
-Do not proceed to baseline, ramp, cloud execution, or automatic retry from this checkpoint.
+Do not add the authenticated pizza transaction, proceed to baseline or ramp, or enable any
+automatic retry from this checkpoint.

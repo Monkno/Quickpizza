@@ -5,7 +5,7 @@ This repository contains the performance testing and black-box observability str
 - System under test: <https://quickpizza.grafana.com>
 - Execution platform: Gatling Enterprise Cloud
 - Test implementation language: TypeScript
-- Current phase: bounded HTTP smoke harness and no-load validation
+- Current phase: Phase 2 harness complete; Gatling Cloud deployment not started
 
 See the [Performance Testing and Observability Plan](docs/PERFORMANCE_TESTING_PLAN.md) for scope, safety controls, workload models, quality gates, credit budget, and implementation phases.
 
@@ -39,5 +39,8 @@ and one iteration. It uses no Gatling Enterprise Cloud credits when run locally.
 
 The same bounded smoke is available through the manual-only `Protocol smoke (manual)` GitHub
 Actions workflow. It is never triggered by a push, pull request, or schedule.
+
+The latest verified result is recorded in
+[Anonymous Protocol Smoke — 2026-09-15](docs/results/2026-09-15-protocol-smoke.md).
 
 > QuickPizza is a shared public testing environment. High-load, stress, spike, breakpoint, and long-duration tests must not be executed against it.
