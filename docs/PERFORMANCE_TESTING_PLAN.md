@@ -292,17 +292,19 @@ No request to QuickPizza and no Gatling Cloud run should occur automatically on 
 
 ### 11.2 Cloud execution workflow
 
-The Gatling Cloud workflow will use `workflow_dispatch` and require an explicit profile input. It will include:
+Profile-specific Gatling workflows use `workflow_dispatch` and literal confirmation inputs. They
+include:
 
 - A protected GitHub environment named `performance` when repository settings allow it.
 - `GATLING_ENTERPRISE_API_TOKEN` from encrypted repository secrets.
-- The Gatling simulation ID from a non-secret Actions variable after deployment.
+- Immutable Gatling package and test IDs in the configuration-as-code file.
 - A hard job timeout.
 - One concurrency group with `cancel-in-progress: false`.
 - No retry step.
 - Full-commit pinning for third-party GitHub Actions.
 - A run summary containing the Gatling report link and selected profile.
-- A validation step that rejects unapproved target hosts and profile values.
+- A source-level allowlist that rejects unapproved target hosts and profile values.
+- A no-load safety-policy check that fails CI when workload or workflow bounds drift.
 
 Scheduled execution is disabled during the limited-credit evaluation period. It may be proposed later only after stable baselines, predictable credit use, and an appropriate Gatling plan exist.
 

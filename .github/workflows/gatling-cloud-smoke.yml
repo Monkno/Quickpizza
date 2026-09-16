@@ -20,6 +20,7 @@ jobs:
     name: Run one controlled cloud smoke
     runs-on: ubuntu-latest
     timeout-minutes: 10
+    environment: performance
 
     steps:
       - name: Validate explicit run confirmation

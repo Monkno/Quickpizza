@@ -25,7 +25,11 @@ campaign has consumed five Gatling credits. Five of the ten-credit team quota re
 - Gatling's external warm-up request is disabled.
 - CI performs installation, formatting, type checking, and packaging only; it sends no target
   traffic and starts no cloud run.
+- The no-load quality gate verifies the target, profiles, request count, generator configuration,
+  assertions, manual triggers, confirmations, concurrency, and absence of scheduled cloud runs.
 - A separate manual-only workflow is the sole CI entry point for the bounded protocol smoke.
+- Every live-target or Gatling operation uses the `performance` GitHub Environment, restricted to
+  the default branch in repository settings.
 - Gatling Enterprise deployment and execution are separated; the deploy workflow cannot start
   a cloud run.
 - Cloud smoke execution requires a literal confirmation value and is limited by a hard job

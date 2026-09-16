@@ -34,7 +34,8 @@ npm run quality
 ```
 
 This is the default CI path. It formats-checks, type-checks, and builds the Gatling package. It
-does not contact QuickPizza or Gatling Enterprise Cloud.
+also verifies the versioned workload-safety policy. It does not contact QuickPizza or Gatling
+Enterprise Cloud.
 
 ## Manual protocol smoke
 
@@ -57,7 +58,7 @@ The latest verified result is recorded in
 
 The manual-only `Gatling deploy (manual)` workflow packages the simulation and deploys its test
 configuration to the `Quickpizza` team. Deployment does not start a load test. Cloud execution
-is intentionally kept in a separate future workflow so publishing code cannot consume credits.
+is kept in separate profile-specific workflows so publishing code cannot consume credits.
 
 The verified deployment is recorded in
 [Gatling Enterprise Deployment — 2026-09-15](docs/results/2026-09-15-gatling-deployment.md).

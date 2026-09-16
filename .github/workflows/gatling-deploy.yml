@@ -15,6 +15,7 @@ jobs:
     name: Deploy package without running it
     runs-on: ubuntu-latest
     timeout-minutes: 10
+    environment: performance
 
     steps:
       - name: Check out repository

@@ -20,6 +20,7 @@ jobs:
     name: Run one controlled three-minute light ramp
     runs-on: ubuntu-latest
     timeout-minutes: 12
+    environment: performance
 
     steps:
       - name: Validate explicit run confirmation

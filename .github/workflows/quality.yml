@@ -47,7 +47,7 @@ jobs:
             echo ""
             echo "- Result: ${QUALITY_OUTCOME}"
             echo "- Commit: ${COMMIT_SHA}"
-            echo "- Checks: formatting, TypeScript, and Gatling package build"
+            echo "- Checks: formatting, safety policy, TypeScript, and Gatling package build"
             echo "- Target traffic: none"
             echo "- Gatling Cloud credits: none"
           } >> "$GITHUB_STEP_SUMMARY"
