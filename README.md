@@ -7,7 +7,7 @@ This repository contains the performance testing and black-box observability str
 - System under test: <https://quickpizza.grafana.com>
 - Execution platform: Gatling Enterprise Cloud
 - Test implementation language: TypeScript
-- Current phase: Phase 4 paused at the credit gate
+- Current phase: Initial controlled campaign complete
 
 See the [Performance Testing and Observability Plan](docs/PERFORMANCE_TESTING_PLAN.md) for scope, safety controls, workload models, quality gates, credit budget, and implementation phases.
 
@@ -65,16 +65,19 @@ The verified deployment is recorded in
 
 ## Controlled cloud smoke
 
-The manual-only `Gatling Cloud smoke (manual)` workflow is the only cloud execution entry point
-currently implemented. It requires the exact confirmation value `RUN_ONE_CREDIT_SMOKE`, runs the
-deployed one-user smoke, waits for assertions, and has no retry or schedule. The team quota must
-still be checked immediately before every dispatch.
+The manual-only `Gatling Cloud smoke (manual)` workflow is the dedicated smoke entry point. It
+requires the exact confirmation value `RUN_ONE_CREDIT_SMOKE`, runs the deployed one-user smoke,
+waits for assertions, and has no retry or schedule. The team quota must still be checked
+immediately before every dispatch.
 
 The first cloud connectivity smoke passed and is documented in
 [Gatling Cloud Connectivity Smoke — 2026-09-15](docs/results/2026-09-15-cloud-smoke.md).
 
 The first controlled baseline also passed and is documented in
 [Gatling Cloud Baseline — 2026-09-15](docs/results/2026-09-15-cloud-baseline.md).
+
+The final credit-bounded ramp passed and is documented in
+[Gatling Cloud Light Ramp — 2026-09-16](docs/results/2026-09-16-cloud-light-ramp.md).
 
 The same anonymous journey also defines two bounded workload profiles: a three-minute `baseline`
 at one journey per second and a one-minute `light-ramp` from 0.5 to 2 journeys per second. They are
@@ -89,7 +92,8 @@ does not authorize a run. It requires `RUN_TWO_CREDIT_LIGHT_RAMP` and may be dis
 after a healthy baseline and a fresh credit check confirm that the campaign budget remains valid.
 The original three-minute ramp was deferred because it would have breached the three-credit
 investigation buffer. The one-minute profile preserves the same peak rate while limiting expected
-consumption to two credits, leaving the protected buffer intact.
+consumption to two credits. Its single authorized campaign run passed, consumed two credits, and
+left the protected three-credit buffer intact. No further run is currently authorized.
 
 Result interpretation and the version-controlled comparison rules are defined in
 [Baseline Governance](docs/BASELINE_GOVERNANCE.md). Use the

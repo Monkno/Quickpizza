@@ -1,5 +1,8 @@
 # LinkedIn Educational Post
 
+> Historical copy prepared before the final one-minute light ramp. Current campaign evidence is
+> maintained in [Evidence Index](EVIDENCE_INDEX.md).
+
 ## Ready-to-publish copy
 
 Performance testing is not always about finding the breaking point.

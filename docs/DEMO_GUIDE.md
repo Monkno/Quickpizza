@@ -49,6 +49,9 @@ Highlight:
 - Three successful assertions.
 - One managed generator in `US East - N. Virginia`.
 
+Then open the [light-ramp evidence](results/2026-09-16-cloud-light-ramp.md): 150 requests completed
+with zero errors, 45 ms p95, 47 ms p99, and the same managed location.
+
 The Gatling report requires access to the PushPoint Co. organization. The committed findings record
 and GitHub Actions run provide reviewable evidence when that organization access is unavailable.
 
@@ -60,8 +63,9 @@ expected to consume approximately four more and leave only one.
 
 The plan required a minimum three-credit investigation buffer, so that profile was not run. The
 final light-ramp duration was later reduced to one minute while retaining the approved peak rate.
-This is a positive control outcome: governance changed the workload before execution instead of
-spending the protected balance.
+The revised run passed and consumed two credits, leaving exactly three. This is a positive control
+outcome: governance changed the workload before execution instead of spending the protected
+balance.
 
 ## 6. Close with the correct interpretation
 

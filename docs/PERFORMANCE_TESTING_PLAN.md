@@ -2,8 +2,8 @@
 
 | Field                   | Value                                                    |
 | ----------------------- | -------------------------------------------------------- |
-| Status                  | Approved — implementation in progress                    |
-| Version                 | 1.0                                                      |
+| Status                  | Complete — initial controlled campaign                   |
+| Version                 | 1.1                                                      |
 | System under test       | `https://quickpizza.grafana.com`                         |
 | Test type               | Black-box performance testing and external observability |
 | Primary platform        | Gatling Enterprise Cloud                                 |
@@ -388,7 +388,7 @@ Deliverables:
 
 - Package deployed to the `Quickpizza` Gatling team.
 - Simulation configured with one load generator.
-- Simulation ID stored as a non-secret repository variable.
+- Immutable package and test IDs stored in `.gatling/package.conf`.
 - Manual GitHub Actions workflow.
 
 Exit gate: configuration review completed before the first cloud run.
@@ -404,6 +404,9 @@ Deliverables:
 
 Exit gate: total campaign remains within the approved credit budget and the target shows no sign of overload.
 
+Completion evidence: the smoke, baseline, and one-minute light ramp passed with zero errors. Total
+campaign consumption was seven credits, preserving the planned three-credit investigation buffer.
+
 ### Phase 5: Baseline governance
 
 Deliverables:
@@ -413,6 +416,9 @@ Deliverables:
 - Documented criteria for pass, fail, and inconclusive results.
 
 Exit gate: a future authorized run can be reproduced and interpreted without undocumented assumptions.
+
+Completion evidence: compatibility, classification, threshold-change, retention, and shared-target
+interpretation rules are versioned in `docs/BASELINE_GOVERNANCE.md`.
 
 ## 14. Entry and exit criteria
 
