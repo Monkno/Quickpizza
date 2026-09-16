@@ -48,6 +48,9 @@ as a secret. No browser session credential will be copied into CI.
 
 ## Verified evidence
 
+- [No-load safety-policy run 35038752866](https://github.com/Monkno/Quickpizza/actions/runs/35038752866)
+  passed formatting, repository safety invariants, type checking, and the Gatling package build
+  on `main` without sending target traffic or consuming credits.
 - [No-load Quality run 35007545377](https://github.com/Monkno/Quickpizza/actions/runs/35007545377)
   passed installation, formatting, type checking, and Gatling package build on Node.js 24.
 - [Anonymous protocol smoke 35007608915](https://github.com/Monkno/Quickpizza/actions/runs/35007608915)
