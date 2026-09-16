@@ -31,7 +31,7 @@ export default simulation((setUp) => {
   const injectionProfiles = {
     smoke: atOnceUsers(1),
     baseline: constantUsersPerSec(1).during(180),
-    "light-ramp": rampUsersPerSec(0.5).to(2).during(180)
+    "light-ramp": rampUsersPerSec(0.5).to(2).during(60)
   };
 
   if (!Object.hasOwn(injectionProfiles, requestedProfile)) {

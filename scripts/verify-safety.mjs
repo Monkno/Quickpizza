@@ -40,7 +40,7 @@ requireText(simulation, "smoke: atOnceUsers(1)", "smoke profile");
 requireText(simulation, "baseline: constantUsersPerSec(1).during(180)", "baseline profile");
 requireText(
   simulation,
-  '"light-ramp": rampUsersPerSec(0.5).to(2).during(180)',
+  '"light-ramp": rampUsersPerSec(0.5).to(2).during(60)',
   "light-ramp profile"
 );
 requireText(simulation, "Object.hasOwn(injectionProfiles, requestedProfile)", "profile allowlist");
@@ -76,7 +76,7 @@ const cloudWorkflows = [
   },
   {
     path: ".github/workflows/gatling-cloud-light-ramp.yml",
-    confirmation: "RUN_THREE_CREDIT_LIGHT_RAMP",
+    confirmation: "RUN_TWO_CREDIT_LIGHT_RAMP",
     simulation: "QuickPizza - Anonymous Light Ramp"
   }
 ];

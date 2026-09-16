@@ -13,13 +13,13 @@ campaign has consumed five Gatling credits. Five of the ten-credit team quota re
 | 1. Live reconnaissance       | Complete for anonymous HTTP scope | Homepage and public configuration returned 200; recommendation requires authorization |
 | 2. Test harness              | Complete                          | No-load gates and the corrected two-request anonymous smoke passed                    |
 | 3. Cloud deployment          | Complete                          | Package and test configuration deployed; immutable IDs recorded                       |
-| 4. Controlled cloud campaign | Paused at credit gate             | Baseline passed; light ramp would breach the three-credit investigation buffer        |
+| 4. Controlled cloud campaign | Ready for final bounded run       | One-minute light ramp is expected to preserve the three-credit investigation buffer   |
 | 5. Baseline governance       | Procedure complete                | Rules are versioned; thresholds remain provisional after the first baseline           |
 
 ## Implemented safety controls
 
 - The simulation accepts only `https://quickpizza.grafana.com`.
-- Only three bounded profiles exist: one-user `smoke`, three-minute `baseline`, and three-minute
+- Only three bounded profiles exist: one-user `smoke`, three-minute `baseline`, and one-minute
   `light-ramp`.
 - The journey makes exactly two anonymous application requests and contains no loop or retry.
 - Gatling's external warm-up request is disabled.
@@ -66,11 +66,12 @@ as a secret. No browser session credential will be copied into CI.
 
 ## Safe resume point
 
-1. Keep the light ramp deferred while only five team credits remain; the expected four-credit cost
-   would leave one and violate the three-credit investigation buffer.
-2. If the quota increases, reconfirm the repository, branch, target, and anonymous-only scope.
-3. Recheck the quota immediately before dispatch and run at most one guarded light ramp.
-4. Record its evidence using the result template and compare it only under the governance rules.
+1. Deploy the one-minute light-ramp configuration without starting a load generator.
+2. Reconfirm the repository, `main`, target, anonymous-only scope, and absence of active runs.
+3. Recheck that five team credits remain, then run at most one guarded light ramp with an expected
+   cost of two credits.
+4. Record actual consumption and evidence using the result template, then compare it under the
+   governance rules without treating the higher workload as a like-for-like regression run.
 
-Do not add the authenticated pizza transaction, spend the protected credit buffer, or enable any
-automatic retry from this checkpoint.
+Do not add the authenticated pizza transaction, allow the balance to fall below three, or enable
+any automatic retry from this checkpoint.

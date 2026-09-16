@@ -58,9 +58,10 @@ Open [Implementation Status](IMPLEMENTATION_STATUS.md). The cloud smoke used one
 baseline used four, leaving five of the ten-credit team quota. A comparable three-minute ramp was
 expected to consume approximately four more and leave only one.
 
-The plan required a minimum three-credit investigation buffer, so the campaign stopped. This is a
-positive control outcome: the automation was ready, but governance prevented a technically
-unnecessary run.
+The plan required a minimum three-credit investigation buffer, so that profile was not run. The
+final light-ramp duration was later reduced to one minute while retaining the approved peak rate.
+This is a positive control outcome: governance changed the workload before execution instead of
+spending the protected balance.
 
 ## 6. Close with the correct interpretation
 

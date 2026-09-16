@@ -76,20 +76,20 @@ The first cloud connectivity smoke passed and is documented in
 The first controlled baseline also passed and is documented in
 [Gatling Cloud Baseline — 2026-09-15](docs/results/2026-09-15-cloud-baseline.md).
 
-The same anonymous journey also defines two bounded, three-minute workload profiles: `baseline`
-at one journey per second and `light-ramp` from 0.5 to 2 journeys per second. They are deployed
-and executed separately; neither can be selected by the cloud smoke workflow.
+The same anonymous journey also defines two bounded workload profiles: a three-minute `baseline`
+at one journey per second and a one-minute `light-ramp` from 0.5 to 2 journeys per second. They are
+deployed and executed separately; neither can be selected by the cloud smoke workflow.
 
 The manual-only `Gatling Cloud baseline (manual)` workflow is the sole baseline entry point. It
 requires `RUN_THREE_CREDIT_BASELINE`, uses the same one-generator concurrency lock as the cloud
 smoke, and has no retry or schedule.
 
 The manual-only `Gatling Cloud light ramp (manual)` workflow is also implemented, but its presence
-does not authorize a run. It requires `RUN_THREE_CREDIT_LIGHT_RAMP` and may be dispatched only
+does not authorize a run. It requires `RUN_TWO_CREDIT_LIGHT_RAMP` and may be dispatched only
 after a healthy baseline and a fresh credit check confirm that the campaign budget remains valid.
-The current baseline consumed four credits, leaving five of the ten-credit team quota. The light
-ramp is therefore deferred because an equivalent run would breach the three-credit investigation
-buffer.
+The original three-minute ramp was deferred because it would have breached the three-credit
+investigation buffer. The one-minute profile preserves the same peak rate while limiting expected
+consumption to two credits, leaving the protected buffer intact.
 
 Result interpretation and the version-controlled comparison rules are defined in
 [Baseline Governance](docs/BASELINE_GOVERNANCE.md). Use the

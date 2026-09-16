@@ -53,5 +53,9 @@ three-minute light ramp is expected to consume approximately four more credits, 
 one and violate the plan's minimum three-credit investigation buffer. The light ramp is therefore
 deferred; no automatic or manual retry was started.
 
+After this result was reviewed, the planned light ramp was amended to one minute while retaining
+the 0.5-to-2 journeys-per-second range. Its expected two-credit cost preserves the three-credit
+investigation buffer. This amendment does not change the baseline result recorded here.
+
 These results describe what the external load generator observed on a shared public demo. They do
 not establish the cause of latency or prove server-side capacity.

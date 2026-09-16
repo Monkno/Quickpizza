@@ -145,15 +145,19 @@ Pauses must represent human interaction time and prevent tight loops. The initia
 
 All profiles use one load generator and a single geographic location. Cloud execution is sequential.
 
-| Profile                  | Purpose                                                   | Proposed load                                                        | Maximum duration     | Cloud credits       |
-| ------------------------ | --------------------------------------------------------- | -------------------------------------------------------------------- | -------------------- | ------------------- |
-| Local protocol smoke     | Validate script, checks, data, and naming                 | One user, one iteration                                              | Less than one minute | None                |
-| Cloud connectivity smoke | Confirm packaging, token, location, and report generation | One user with normal pauses                                          | One minute           | Approximately one   |
-| Baseline                 | Measure low-load steady behavior                          | Open model targeting approximately one business iteration per second | Three minutes        | Approximately three |
-| Light ramp               | Observe behavior under a small controlled increase        | Gradual ramp from approximately 0.5 to 2 iterations per second       | Three minutes        | Approximately three |
-| Confirmation run         | Confirm a suspected regression only when justified        | Same profile as the run being confirmed                              | Maximum two minutes  | Up to two           |
+| Profile                  | Purpose                                                   | Proposed load                                                        | Maximum duration     | Cloud credits     |
+| ------------------------ | --------------------------------------------------------- | -------------------------------------------------------------------- | -------------------- | ----------------- |
+| Local protocol smoke     | Validate script, checks, data, and naming                 | One user, one iteration                                              | Less than one minute | None              |
+| Cloud connectivity smoke | Confirm packaging, token, location, and report generation | One user with normal pauses                                          | One minute           | Approximately one |
+| Baseline                 | Measure low-load steady behavior                          | Open model targeting approximately one business iteration per second | Three minutes        | Four observed     |
+| Light ramp               | Observe behavior under a small controlled increase        | Gradual ramp from approximately 0.5 to 2 iterations per second       | One minute           | Approximately two |
+| Confirmation run         | Confirm a suspected regression only when justified        | Same profile as the run being confirmed                              | Maximum two minutes  | Up to two         |
 
-The initial campaign must stop after the cloud smoke, baseline, and light-ramp runs. This limits planned use to approximately seven credits and preserves at least three credits for investigation or confirmation. Initialization time is billable, so actual consumption must be checked after every run.
+The initial campaign must stop after the cloud smoke, baseline, and light-ramp runs. The smoke used
+one credit and the baseline used four. The light ramp is limited to one minute so its expected
+two-credit cost keeps total planned use at approximately seven and preserves at least three credits
+for investigation or confirmation. Initialization time is billable, so actual consumption must be
+checked immediately before and after the run.
 
 The confirmation run is conditional and must not start automatically.
 

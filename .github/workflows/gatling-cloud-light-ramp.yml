@@ -4,7 +4,7 @@ on:
   workflow_dispatch:
     inputs:
       confirmation:
-        description: Type RUN_THREE_CREDIT_LIGHT_RAMP to authorize this run
+        description: Type RUN_TWO_CREDIT_LIGHT_RAMP to authorize this run
         required: true
         type: string
 
@@ -17,7 +17,7 @@ concurrency:
 
 jobs:
   light-ramp:
-    name: Run one controlled three-minute light ramp
+    name: Run one controlled one-minute light ramp
     runs-on: ubuntu-latest
     timeout-minutes: 12
     environment: performance
@@ -27,7 +27,7 @@ jobs:
         env:
           RUN_CONFIRMATION: ${{ inputs.confirmation }}
         run: |
-          if [ "$RUN_CONFIRMATION" != "RUN_THREE_CREDIT_LIGHT_RAMP" ]; then
+          if [ "$RUN_CONFIRMATION" != "RUN_TWO_CREDIT_LIGHT_RAMP" ]; then
             echo "Light ramp rejected: confirmation value did not match."
             exit 1
           fi
@@ -59,7 +59,7 @@ jobs:
           --non-interactive
           --wait-for-run-end
           --run-title="QuickPizza anonymous light ramp - ${GITHUB_SHA::7}"
-          --run-description="Ramp from 0.5 to 2 journeys per second for three minutes, two anonymous requests per journey"
+          --run-description="Ramp from 0.5 to 2 journeys per second for one minute, two anonymous requests per journey"
 
       - name: Publish cloud-light-ramp summary
         if: always()
@@ -71,7 +71,7 @@ jobs:
             echo "## QuickPizza Gatling Cloud light ramp"
             echo ""
             echo "- Result: ${RUN_OUTCOME}"
-            echo "- Profile: 0.5 to 2 journeys per second for three minutes"
+            echo "- Profile: 0.5 to 2 journeys per second for one minute"
             echo "- Target: https://quickpizza.grafana.com"
             echo "- Authorization: healthy baseline and protected credit buffer required"
             echo "- Gatling runs: ${GATLING_RUNS_URL}"
