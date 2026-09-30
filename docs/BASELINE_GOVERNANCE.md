@@ -32,6 +32,10 @@ Record the following for every cloud run:
 
 Use [the run-result template](results/RUN_RESULT_TEMPLATE.md) so missing evidence remains visible.
 
+Record a reviewed JSON companion using [the result-summary contract](RESULT_COMPARISON.md) to
+apply eligibility and regression rules offline. JSON does not replace the native report or
+the review of achieved workload and environmental context.
+
 ## Classification
 
 ### Pass

@@ -1,0 +1,41 @@
+{
+  "schemaVersion": 1,
+  "runId": "run_p38b85aed3gzt8oregydxsx9sy",
+  "sourceSha": "453ae6950e0450fbafe4cd7d8fb680bfa9474dd8",
+  "gatlingVersion": "3.15.1",
+  "testId": "test_6b4hwub88ffkiprt1dqqfq9ksh",
+  "target": "https://quickpizza.grafana.com",
+  "profile": "light-ramp",
+  "durationSeconds": 60,
+  "injection": { "from": 0.5, "to": 2 },
+  "generator": { "count": 1, "location": "US East - N. Virginia" },
+  "completedWorkload": true,
+  "anomalies": [],
+  "unexpectedStatusCodes": 0,
+  "global": { "count": 150, "failed": 0, "p50Ms": 20, "p95Ms": 45, "p99Ms": 47, "maxMs": 184 },
+  "requests": [
+    {
+      "name": "Open QuickPizza",
+      "count": 75,
+      "failed": 0,
+      "p50Ms": 39,
+      "p95Ms": 45,
+      "p99Ms": 184,
+      "maxMs": 184
+    },
+    {
+      "name": "Load public configuration",
+      "count": 75,
+      "failed": 0,
+      "p50Ms": 13,
+      "p95Ms": 15,
+      "p99Ms": 20,
+      "maxMs": 20
+    }
+  ],
+  "evidence": {
+    "startedAtUtc": "2026-09-16T00:20:34Z",
+    "github": "https://github.com/Monkno/Quickpizza/actions/runs/35039483726",
+    "gatling": "https://cloud.gatling.io/o/pushpoint-co/simulations/test_6b4hwub88ffkiprt1dqqfq9ksh/runs/run_p38b85aed3gzt8oregydxsx9sy"
+  }
+}
