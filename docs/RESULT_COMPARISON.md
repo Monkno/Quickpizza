@@ -72,3 +72,8 @@ Workflow YAML is parsed. The reviewed confirmation block and the direct cloud co
 conservatively; changing their shell structure requires a policy/test update. Simulation and
 package checks retain the existing source-text invariants. This is a guard against accidental
 drift in the reviewed repository, not a proof of arbitrary shell or TypeScript program safety.
+
+The implementation and tests are TypeScript ES modules (`.mts`). `npm run typecheck:tooling`
+checks their strict contracts, including `RunSummary`, `ResponseMetrics`, and `ComparisonResult`.
+The JSON boundary still validates runtime data before returning a typed summary. Running TypeScript
+with Node strips types; the separate compiler gate provides the static verification.

@@ -19,7 +19,9 @@ Progress and the exact safe resume point are recorded in
 - [Evidence Index](docs/EVIDENCE_INDEX.md) maps every claim to implementation and run evidence.
 - [Demonstration Guide](docs/DEMO_GUIDE.md) provides a five-to-seven-minute, zero-load walkthrough.
 - [LinkedIn Educational Post](docs/LINKEDIN_POST.md) contains ready-to-publish English copy and an
-  short clip storyboard focused on Gatling's performance reports.
+  accompanying short clip storyboard focused on Gatling's performance reports.
+- [Working without cloud credits](docs/WITHOUT_CLOUD_CREDITS.md) separates offline improvements
+  from local simulations and Enterprise executions.
 
 ## Requirements
 
@@ -33,11 +35,16 @@ npm ci
 npm run quality
 ```
 
-This is the default CI path. It checks formatting, runs offline regression tests, type-checks,
+This is the default CI path. It checks formatting, runs offline regression tests, type-checks
+both the Gatling simulation and the TypeScript tools/tests,
 and builds the Gatling package. It also verifies the versioned workload-safety policy, including
 the parsed YAML triggers, confirmation ordering, concurrency lock, timeouts, and assertion handling.
 It does not contact QuickPizza or Gatling Enterprise Cloud. A first build may download the Gatling
 runtime from its distribution servers.
+
+The tools and tests use `.mts` (TypeScript ES modules), executed directly by Node.js 24. Their
+strict compile-time checks run through `tsconfig.tooling.json`; native execution alone does not
+check types. No generated JavaScript is committed to change GitHub's language statistics.
 
 ## Compare recorded Gatling results offline
 

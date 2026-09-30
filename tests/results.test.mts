@@ -3,12 +3,13 @@ import { readFileSync } from "node:fs";
 import { spawnSync } from "node:child_process";
 import { test } from "node:test";
 import { fileURLToPath } from "node:url";
-import { compareResults, validateResult } from "../scripts/compare-results.mjs";
+import { compareResults, validateResult } from "../scripts/compare-results.mts";
+import type { RunSummary } from "../scripts/result-types.mts";
 
 const baselinePath = new URL("../docs/results/2026-09-15-cloud-baseline.json", import.meta.url);
 const rampPath = new URL("../docs/results/2026-09-16-cloud-light-ramp.json", import.meta.url);
-const baseline = JSON.parse(readFileSync(baselinePath, "utf8"));
-const ramp = JSON.parse(readFileSync(rampPath, "utf8"));
+const baseline = validateResult(JSON.parse(readFileSync(baselinePath, "utf8")));
+const ramp = validateResult(JSON.parse(readFileSync(rampPath, "utf8")));
 
 // Modified runs are synthetic test cases, never new execution evidence.
 function candidate() {
@@ -71,7 +72,7 @@ test("error regression uses percentage points at each transaction", () => {
   assert.equal(result.changes[1].candidateRegression, true);
 });
 
-for (const [name, update] of [
+const failedRunCases: [string, (run: RunSummary) => void][] = [
   [
     "p95 guardrail equality",
     (run) => {
@@ -103,7 +104,8 @@ for (const [name, update] of [
       });
     }
   ]
-]) {
+];
+for (const [name, update] of failedRunCases) {
   test(`run fails for ${name}`, () => {
     const run = candidate();
     update(run);
@@ -134,11 +136,11 @@ test("unknown configuration and changed transaction sequence are incompatible", 
   assert.ok(result.reasons.includes("Incompatible transaction sequence"));
 });
 
-for (const [name, update] of [
+const invalidSummaryCases: [string, (run: RunSummary) => void][] = [
   [
     "missing evidence",
     (run) => {
-      delete run.evidence;
+      Reflect.deleteProperty(run, "evidence");
     }
   ],
   [
@@ -156,7 +158,7 @@ for (const [name, update] of [
   [
     "missing anomaly review",
     (run) => {
-      delete run.anomalies;
+      Reflect.deleteProperty(run, "anomalies");
     }
   ],
   [
@@ -210,10 +212,11 @@ for (const [name, update] of [
   [
     "unknown schema",
     (run) => {
-      run.schemaVersion = 2;
+      Reflect.set(run, "schemaVersion", 2);
     }
   ]
-]) {
+];
+for (const [name, update] of invalidSummaryCases) {
   test(`invalid summary rejects ${name}`, () => {
     const run = candidate();
     update(run);
@@ -225,7 +228,7 @@ test("CLI returns exit 2 for incompatible historical runs", () => {
   const result = spawnSync(
     process.execPath,
     [
-      fileURLToPath(new URL("../scripts/compare-results.mjs", import.meta.url)),
+      fileURLToPath(new URL("../scripts/compare-results.mts", import.meta.url)),
       fileURLToPath(baselinePath),
       fileURLToPath(rampPath)
     ],

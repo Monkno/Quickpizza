@@ -9,6 +9,10 @@ controls. Parsed workflow checks enforce manual triggers, confirmation ordering,
 bounded timeouts, and cloud assertion handling. Historical baseline/ramp records have reviewed
 JSON companions. See [Result comparison](RESULT_COMPARISON.md).
 
+The comparator, safety verifier and offline tests now use TypeScript ES modules and participate
+in strict type checking. [Working without cloud credits](WITHOUT_CLOUD_CREDITS.md) documents
+what remains available locally and offline, while preserving all public-target/cloud gates.
+
 The initial campaign checkpoint below is historical. Its recorded credit balance is not a current
 quota check. No new QuickPizza traffic or Gatling Cloud execution is part of this repository update.
 
