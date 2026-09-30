@@ -1,6 +1,16 @@
 # Implementation Status
 
-Last updated: 2026-09-15
+Last updated: 2026-09-30
+
+## Repository improvement
+
+The no-load quality path now includes offline result comparison and regression tests for safety
+controls. Parsed workflow checks enforce manual triggers, confirmation ordering, concurrency,
+bounded timeouts, and cloud assertion handling. Historical baseline/ramp records have reviewed
+JSON companions. See [Result comparison](RESULT_COMPARISON.md).
+
+The initial campaign checkpoint below is historical. Its recorded credit balance is not a current
+quota check. No new QuickPizza traffic or Gatling Cloud execution is part of this repository update.
 
 ## Current checkpoint
 

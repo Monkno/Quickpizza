@@ -19,7 +19,7 @@ Progress and the exact safe resume point are recorded in
 - [Evidence Index](docs/EVIDENCE_INDEX.md) maps every claim to implementation and run evidence.
 - [Demonstration Guide](docs/DEMO_GUIDE.md) provides a five-to-seven-minute, zero-load walkthrough.
 - [LinkedIn Educational Post](docs/LINKEDIN_POST.md) contains ready-to-publish English copy and an
-  accurate four-panel story.
+  short clip storyboard focused on Gatling's performance reports.
 
 ## Requirements
 
@@ -33,9 +33,29 @@ npm ci
 npm run quality
 ```
 
-This is the default CI path. It formats-checks, type-checks, and builds the Gatling package. It
-also verifies the versioned workload-safety policy. It does not contact QuickPizza or Gatling
-Enterprise Cloud.
+This is the default CI path. It checks formatting, runs offline regression tests, type-checks,
+and builds the Gatling package. It also verifies the versioned workload-safety policy, including
+the parsed YAML triggers, confirmation ordering, concurrency lock, timeouts, and assertion handling.
+It does not contact QuickPizza or Gatling Enterprise Cloud. A first build may download the Gatling
+runtime from its distribution servers.
+
+## Compare recorded Gatling results offline
+
+The historical baseline and light ramp now have machine-readable JSON companions. Compare them
+without starting a simulation:
+
+```shell
+npm run results:compare -- docs/results/2026-09-15-cloud-baseline.json docs/results/2026-09-16-cloud-light-ramp.json
+```
+
+This example deliberately exits **2** with `comparison: inconclusive`: both historical runs passed
+their Gatling assertions, but their source commits, test IDs, profiles, durations, and injection
+rates differ. They cannot establish a like-for-like regression.
+
+For compatible observations the tool reports global and transaction-level p95 changes, error-rate
+changes in percentage points, and p50/p99 changes. It separates each run's assertion outcome from
+candidate regression signals. See [the result-summary contract](docs/RESULT_COMPARISON.md) for
+input fields, review requirements, and exit codes.
 
 ## Manual protocol smoke
 
