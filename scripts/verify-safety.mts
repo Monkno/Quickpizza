@@ -4,22 +4,52 @@ import { dirname, resolve } from "node:path";
 import { parse } from "yaml";
 
 const repositoryRoot = resolve(dirname(fileURLToPath(import.meta.url)), "..");
-export function verifySafety(read) {
-  const failures = [];
+interface CloudPolicy {
+  confirmation: string;
+  simulation: string;
+}
 
-  function requireText(content, expected, context) {
+interface WorkflowStep {
+  if?: unknown;
+  "continue-on-error"?: unknown;
+  shell?: string;
+  env?: Record<string, string>;
+  run?: string;
+}
+
+interface WorkflowJob {
+  environment?: unknown;
+  "timeout-minutes"?: number;
+  "continue-on-error"?: unknown;
+  steps?: WorkflowStep[];
+}
+
+interface DispatchTrigger {
+  inputs?: { confirmation?: { required?: boolean; type?: string } };
+}
+
+interface Workflow {
+  on?: string | string[] | Record<string, unknown>;
+  jobs?: Record<string, WorkflowJob>;
+  concurrency?: { group?: string; "cancel-in-progress"?: boolean };
+}
+
+export function verifySafety(read: (path: string) => string): string[] {
+  const failures: string[] = [];
+
+  function requireText(content: string, expected: string, context: string) {
     if (!content.includes(expected)) {
       failures.push(`${context}: missing ${JSON.stringify(expected)}`);
     }
   }
 
-  function rejectText(content, rejected, context) {
+  function rejectText(content: string, rejected: string, context: string) {
     if (content.includes(rejected)) {
       failures.push(`${context}: forbidden ${JSON.stringify(rejected)}`);
     }
   }
 
-  function requireCount(content, expression, expected, context) {
+  function requireCount(content: string, expression: RegExp, expected: number, context: string) {
     const actual = content.match(expression)?.length ?? 0;
     if (actual !== expected) {
       failures.push(`${context}: expected ${expected} matches for ${expression}, found ${actual}`);
@@ -31,12 +61,19 @@ export function verifySafety(read) {
   const qualityWorkflow = read(".github/workflows/quality.yml");
   const deployWorkflow = read(".github/workflows/gatling-deploy.yml");
 
-  function verifyWorkflow(path, triggers, cloudTest, maximumTimeout = 10) {
-    let workflow;
+  function verifyWorkflow(
+    path: string,
+    triggers: string[],
+    cloudTest?: CloudPolicy,
+    maximumTimeout = 10
+  ) {
+    let workflow: Workflow;
     try {
-      workflow = parse(read(path), { uniqueKeys: true });
+      workflow = parse(read(path), { uniqueKeys: true }) as Workflow;
     } catch (error) {
-      failures.push(`${path}: invalid YAML: ${error.message}`);
+      failures.push(
+        `${path}: invalid YAML: ${error instanceof Error ? error.message : String(error)}`
+      );
       return;
     }
     const events =
@@ -55,6 +92,7 @@ export function verifySafety(read) {
         if (job.environment !== "performance")
           failures.push(`${path}: missing performance environment`);
         if (
+          typeof job["timeout-minutes"] !== "number" ||
           !Number.isInteger(job["timeout-minutes"]) ||
           job["timeout-minutes"] > maximumTimeout ||
           job["timeout-minutes"] < 1
@@ -97,7 +135,11 @@ export function verifySafety(read) {
         ) {
           failures.push(`${path}: cloud runs must share the non-cancelling concurrency lock`);
         }
-        const confirmationInput = workflow.on?.workflow_dispatch?.inputs?.confirmation;
+        const dispatch =
+          workflow.on && typeof workflow.on === "object" && !Array.isArray(workflow.on)
+            ? (workflow.on.workflow_dispatch as DispatchTrigger | undefined)
+            : undefined;
+        const confirmationInput = dispatch?.inputs?.confirmation;
         if (confirmationInput?.required !== true || confirmationInput?.type !== "string") {
           failures.push(`${path}: confirmation must be a required string input`);
         }

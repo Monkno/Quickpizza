@@ -1,16 +1,16 @@
 import assert from "node:assert/strict";
 import { readFileSync } from "node:fs";
 import { test } from "node:test";
-import { verifySafety } from "../scripts/verify-safety.mjs";
+import { verifySafety } from "../scripts/verify-safety.mts";
 
-const read = (path) => readFileSync(new URL(`../${path}`, import.meta.url), "utf8");
+const read = (path: string) => readFileSync(new URL(`../${path}`, import.meta.url), "utf8");
 const cloud = ".github/workflows/gatling-cloud-smoke.yml";
 
 test("versioned repository passes without executing Gatling", () => {
   assert.deepEqual(verifySafety(read), []);
 });
 
-const mutations = [
+const mutations: [string, string, string, string][] = [
   [
     "cloud start after failed confirmation",
     cloud,
