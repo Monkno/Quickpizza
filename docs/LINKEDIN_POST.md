@@ -2,21 +2,15 @@
 
 ## Brief post
 
-I used Gatling with TypeScript to model controlled workloads against QuickPizza and turn each
-run into performance evidence: throughput, response-time percentiles, errors, and assertions.
+Continuing my Gatling + AI adventures, today I improved QuickPizza's result comparisons and
+workflow safeguards, using skills and a QA agent to validate 48 offline tests.
 
-The recorded one-minute light ramp completed 150 requests with 0% errors, a 45 ms p95, and all
-three assertions passing. The clip shows the actual Gatling Enterprise report from September 16,
-2026 (UTC).
-
-I also improved the repository with offline regression checks and tested workflow safeguards.
-The comparison tool checks workload compatibility before flagging a possible regression.
-
-These are observations from a shared demo, not a capacity benchmark.
+Here's a quick look at Gatling's load charts, latency percentiles, and assertions from a recorded
+run on a shared demo.
 
 Source and run evidence: https://github.com/Monkno/Quickpizza
 
-#Gatling #PerformanceTesting #TestAutomation #TypeScript
+#Gatling #PerformanceTesting #AI
 
 ## Silent clip storyboard
 
